@@ -3,7 +3,7 @@
   place-self: center;
 
   
-  padding: 15px 20px;
+  padding: 8px 20px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -32,7 +32,9 @@
 
 /* Night mode overlay */
 .night {
+  background-color: rgba(0, 0, 20, 0.9);
   filter: brightness(0.5);
+  transition: 0.5s ease;
 }
 
 /* Search bar */
