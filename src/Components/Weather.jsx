@@ -17,6 +17,7 @@ const Weather = () => {
   const [loading, setLoading] = useState(false);
   const [bgClass, setBgClass] = useState("clear");
   const [isNight, setIsNight] = useState(false);
+  const [error, setError] = useState(""); // For city validation
 
   const allIcon = {
     "01d": clear_icon,
@@ -35,7 +36,7 @@ const Weather = () => {
     "13n": snow_icon,
   };
 
-  // 🔹 Set weather info + background
+  // Set weather info + background
   const setWeatherInfo = (data) => {
     if (!data || !data.weather) return;
 
@@ -61,7 +62,7 @@ const Weather = () => {
     else setBgClass("clear");
   };
 
-  // 🔹 Forecast
+  // Forecast
   const getForecast = async (lat, lon) => {
     try {
       const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
@@ -76,31 +77,37 @@ const Weather = () => {
     }
   };
 
-  // 🔍 Search by city
+  // Search by city
   const search = async (city) => {
     if (!city) return alert("Enter City Name");
     setLoading(true);
+    setError("");
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
       const response = await fetch(url);
-      await new Promise((r) => setTimeout(r, 3000));
+      await new Promise((r) => setTimeout(r, 1000));
       const data = await response.json();
+
       if (!response.ok) {
-        alert(data.message);
+        setError("City not found. Please try again.");
         setWeatherData(null);
+        setForecastData([]);
         setLoading(false);
         return;
       }
+
       setWeatherInfo(data);
       if (data.coord) await getForecast(data.coord.lat, data.coord.lon);
       setLoading(false);
     } catch {
+      setError("Error fetching weather data");
       setWeatherData(null);
+      setForecastData([]);
       setLoading(false);
     }
   };
 
-  // 📍 Search by location
+  // Search by location
   const searchByLocation = async (lat, lon) => {
     setLoading(true);
     try {
@@ -116,7 +123,7 @@ const Weather = () => {
     }
   };
 
-  // 📌 Get location on start
+  // Get location on start
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -154,13 +161,11 @@ const Weather = () => {
           onClick={() => search(inputRef.current.value)}
         />
 
-        {/* Manual toggle */}
-        <button
-          className="theme-toggle"
-          onClick={() => setIsNight(!isNight)}
-        >
+        <button className="theme-toggle" onClick={() => setIsNight(!isNight)}>
           {isNight ? "Switch to Day" : "Switch to Night"}
         </button>
+
+        {error && <p className="error">{error}</p>}
       </div>
 
       {weatherData && (

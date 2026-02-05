@@ -1,15 +1,13 @@
 /* Main weather card */
 .weather {
   place-self: center;
-
-  
-  padding: 8px 20px;
+  padding: 8px 20px;       /* slightly less height */
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 8px;
-  width: 450px;
+  width: 450px;            /* wider */
   transition: 0.5s ease;
 }
 
@@ -32,8 +30,8 @@
 
 /* Night mode overlay */
 .night {
-  background-color: rgba(0, 0, 20, 0.9);
-  filter: brightness(0.5);
+  background-color: rgba(0, 0, 10, 0.95); /* darker night */
+  filter: brightness(0.4);
   transition: 0.5s ease;
 }
 
@@ -83,6 +81,14 @@
   background: #ffffff;
   color: #000;
   font-size: 12px;
+}
+
+/* Error text */
+.error {
+  color: #ff4d4d;
+  font-size: 12px;
+  margin-top: 5px;
+  text-align: center;
 }
 
 /* Current weather */
@@ -156,7 +162,7 @@
   align-items: center;
   color: #fff;
   flex: 1;
-  min-width: 45px;
+  min-width: 50px; /* slightly bigger */
   background: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 5px 0;
